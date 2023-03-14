@@ -105,6 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('show');
         modal.classList.remove('hide');
         document.body.style.overflow = 'hidden';
+        clearTimeout(modalTimerID);
     }
     
     btnsModal.forEach(item => {
@@ -120,4 +121,14 @@ window.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         if(e.code === 'Escape' && modalPopup.classList.contains('show')) closeModal(modalPopup);
     });
-})
+
+    const modalTimerID = setTimeout(() => showModal(modalPopup), 5000);
+
+    function showModalOnScroll() {
+        if(document.documentElement.scrollHeight === document.documentElement.clientHeight + window.pageYOffset) {
+            showModal(modalPopup);  
+            window.removeEventListener('scroll', showModalOnScroll);
+        }
+    }
+    window.addEventListener('scroll', showModalOnScroll);
+});
