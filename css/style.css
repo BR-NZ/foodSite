@@ -399,7 +399,7 @@ a {
     display: block;
     width: 16px;
     height: 16px;
-    background: url(../icons/switch.svg) center center/cover no-repeat
+    background: url(/switch.svg) center center/cover no-repeat
 }
 
 .calculating__choose {

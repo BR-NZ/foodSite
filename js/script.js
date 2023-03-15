@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function showModalOnScroll() {
         if(document.documentElement.scrollHeight === document.documentElement.clientHeight + window.pageYOffset) {
-            showModal(modalPopup);  
+            showModal(modalPopup);
             window.removeEventListener('scroll', showModalOnScroll);
         }
     }
