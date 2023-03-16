@@ -208,32 +208,27 @@ window.addEventListener('DOMContentLoaded', () => {
             const statusMessage = document.createElement('img');
             statusMessage.src = message.loading;
             statusMessage.style.cssText = 'display: block; margin: 0 auto;';
-            form.append(statusMessage);
-
-            const r = new XMLHttpRequest();
-            r.open('POST', 'server.php');
-            r.setRequestHeader('Content-type', 'application/json');
+            form.insertAdjacentElement('afterend', statusMessage);
 
             const formData = new FormData(form);
             const formObj = {};
             formData.forEach((v, k) => {
                 formObj[k] = v;
             });
-            r.send( JSON.stringify(formObj) );
 
-            r.addEventListener('load', () => {
-                if(r.status === 200) {
-                    console.log(r.response);
-                    showThanksModal(message.success);
-
-                    form.reset();
-                    statusMessage.remove();
-                }
-                else {
-                    showThanksModal(message.failure);
-                    statusMessage.remove();
-                }
-            });
+            fetch('server1.php', {
+                method: 'POST',
+                headers: {'Content-type': 'application/json'},
+                body: JSON.stringify(formObj)
+            })
+            .then(data => data.text())
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.success);
+                statusMessage.remove();
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => form.reset());
         });
     }
 
