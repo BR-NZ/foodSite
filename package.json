@@ -1,0 +1,19 @@
+{
+  "name": "foodsite",
+  "version": "1.0.0",
+  "description": "Study project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BR-NZ/foodSite.git"
+  },
+  "author": "Alexey Beschetnikoff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BR-NZ/foodSite/issues"
+  },
+  "homepage": "https://github.com/BR-NZ/foodSite#readme"
+}
