@@ -255,15 +255,42 @@ window.addEventListener('DOMContentLoaded', () => {
         total: document.getElementById('total'),
         count: document.querySelectorAll('.offer__slide').length,
         curr: document.getElementById('current'),
+        dots: document.createElement('ul'),
         index: 1,
         offset: 0
     };
 
+    function setDots(n) {
+        
+        slider.dotsList.forEach(item => item.classList.remove('active'));
+        slider.dotsList[n - 1].classList.add('active');
+    }
+
     slider.inner.style.width = slider.count * 100 + '%';
     slider.inner.style.transition = '0.5s all'
+    slider.wrapper.style.position = 'relative';
     slider.nodes.forEach(slide => slide.style.width = slider.width);
     slider.total.textContent = getZero(slider.count);
     slider.curr.textContent = getZero(slider.index);
+
+    slider.dots.classList.add('dots-inner');
+    slider.wrapper.append(slider.dots);
+    for(let i = 0; i < slider.count; i++) {
+        const dot = document.createElement('li');
+        dot.classList.add('dot');
+        dot.setAttribute('data-slide', i + 1);
+        slider.dots.append(dot);
+
+        if(i === 0) dot.classList.add('active');
+    }
+    slider.dotsList = document.querySelectorAll('.dot');
+    slider.dots.addEventListener('click', (e) => {
+        if(e.target.hasAttribute('data-slide')) {
+            const index = e.target.getAttribute('data-slide');
+            slider.inner.style.transform = `translateX(${-(index - 1) * slider.width}px)`;
+            setDots(index)
+        } 
+    });
 
     slider.next.addEventListener('click', (e) => {
         slider.offset -= slider.width;
@@ -272,6 +299,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if(slider.offset < -(slider.count - 1) * slider.width) slider.offset = 0;
         slider.inner.style.transform = `translateX(${slider.offset}px)`;
         slider.curr.textContent = getZero(slider.index);
+        setDots(slider.index);
     });
     slider.prev.addEventListener('click', (e) => {
         slider.offset += slider.width;
@@ -280,5 +308,72 @@ window.addEventListener('DOMContentLoaded', () => {
         if(slider.offset > 0) slider.offset = -(slider.count - 1) * slider.width;
         slider.inner.style.transform = `translateX(${slider.offset}px)`;
         slider.curr.textContent = getZero(slider.index);
+        setDots(slider.index);
     });
+
+    // CALC
+
+    const result = document.querySelector('.calculating__result span');
+    let sex = 'female', height, weight, age, ratio = 1.375;
+
+    function calcTotal() {
+        if(!sex || !height || !weight || !age || !ratio) {
+            result.textContent = '_____';
+            return;
+        }
+        let resultText = 0;
+        if(sex === 'female') {
+            resultText = (447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio;
+        } else {
+            resultText = (88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio;
+        }
+
+        result.textContent = Math.round(resultText);
+    }
+
+    calcTotal();
+
+    function getStaticInfo(parentSelector, activeClass) {
+        const elements = document.querySelectorAll(`${parentSelector} div`);
+
+        document.querySelector(`${parentSelector}`).addEventListener('click', (e) => {
+            if(e.target.hasAttribute('data-ratio')) {
+                ratio = +e.target.getAttribute('data-ratio');
+            } else {
+                sex = e.target.getAttribute('id');
+            } 
+            if(e.target.classList.contains('calculating__choose-item')) {
+                elements.forEach(item => item.classList.remove(`${activeClass}`));
+                e.target.classList.add(`${activeClass}`);    
+            }
+
+            calcTotal();
+        });
+    }
+
+    getStaticInfo('#gender', 'calculating__choose-item_active');
+    getStaticInfo('.calculating__choose_big', 'calculating__choose-item_active');
+
+    function getDynamicInfo(selector) {
+        const input = document.querySelector(selector);
+
+        input.addEventListener('input', () => {
+            switch(input.getAttribute('id')) {
+                case 'weight':
+                    weight = +input.value;
+                    break;
+                case 'height':
+                    height = +input.value;
+                    break;
+                case 'age':
+                    age = +input.value;
+                    break;
+            }
+            calcTotal();
+        })
+    }
+
+    getDynamicInfo('#height');
+    getDynamicInfo('#weight');
+    getDynamicInfo('#age');
 });
