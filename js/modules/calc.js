@@ -1,6 +1,4 @@
 function calc() {
-    // CALC
-
     function initLocalStorage(parentSelector, activeClass) {
         const elements = document.querySelectorAll(`${parentSelector} div`);
 
@@ -75,7 +73,7 @@ function calc() {
     }
 
     const result = document.querySelector('.calculating__result span');
-    let sex, height, weight, age;
+    let sex, ratio, height, weight, age;
     height = localStorage.height ? localStorage.height : '';
     weight = localStorage.weight ? localStorage.weight : '';
 
@@ -102,4 +100,4 @@ function calc() {
     getDynamicInfo('#age');
 }
 
-module.exports = calc;
+export default calc;

@@ -1,23 +1,22 @@
-function slider() {
-    // SLIDER
+import {getZero} from "./timer";
 
+function slider({slide, wrapper, inner, next, prev, total, curr, index, offset}) {
     const slider = {
-        nodes: document.querySelectorAll('.offer__slide'),
-        wrapper: document.querySelector('.offer__slider-wrapper'),
-        inner: document.querySelector('.offer__slider-inner'),
-        width: document.querySelector('.offer__slider-wrapper').offsetWidth,
-        next: document.querySelector('.offer__slider-next'),
-        prev: document.querySelector('.offer__slider-prev'),
-        total: document.getElementById('total'),
-        count: document.querySelectorAll('.offer__slide').length,
-        curr: document.getElementById('current'),
+        nodes: document.querySelectorAll(slide),
+        wrapper: document.querySelector(wrapper),
+        inner: document.querySelector(inner),
+        width: document.querySelector(wrapper).offsetWidth,
+        next: document.querySelector(next),
+        prev: document.querySelector(prev),
+        total: document.querySelector(total),
+        count: document.querySelectorAll(slide).length,
+        curr: document.querySelector(curr),
         dots: document.createElement('ul'),
-        index: 1,
-        offset: 0
+        index: index,
+        offset: offset,
     };
 
     function setDots(n) {
-
         slider.dotsList.forEach(item => item.classList.remove('active'));
         slider.dotsList[n - 1].classList.add('active');
     }
@@ -28,9 +27,9 @@ function slider() {
     slider.nodes.forEach(slide => slide.style.width = slider.width);
     slider.total.textContent = getZero(slider.count);
     slider.curr.textContent = getZero(slider.index);
-
     slider.dots.classList.add('dots-inner');
     slider.wrapper.append(slider.dots);
+
     for (let i = 0; i < slider.count; i++) {
         const dot = document.createElement('li');
         dot.classList.add('dot');
@@ -39,7 +38,9 @@ function slider() {
 
         if (i === 0) dot.classList.add('active');
     }
+
     slider.dotsList = document.querySelectorAll('.dot');
+
     slider.dots.addEventListener('click', (e) => {
         if (e.target.hasAttribute('data-slide')) {
             const index = e.target.getAttribute('data-slide');
@@ -57,6 +58,7 @@ function slider() {
         slider.curr.textContent = getZero(slider.index);
         setDots(slider.index);
     });
+
     slider.prev.addEventListener('click', (e) => {
         slider.offset += slider.width;
         slider.index--;
@@ -68,4 +70,4 @@ function slider() {
     });
 }
 
-module.exports = slider;
+export default slider;
