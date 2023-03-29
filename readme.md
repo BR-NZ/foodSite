@@ -1,5 +1,8 @@
-# foodSite
-Test project for practice with DOM - simple website about healthy food and lifestyle.
+# foodSite - лэндинг о здоровом образе жизни
+Учебный проект для практикования DOM, Rest API, Babel and Webpack.
 
 #Запуск json-сервера
 json-server путь_файла (иногда нужен npx.. )
+
+#IMG в корне
+MAMP сервер не подгружает изображения SVG из папок не в корне сайта, поэтому сложены в одно кучу в корне
